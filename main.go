@@ -15,6 +15,14 @@ import (
 var f embed.FS
 
 func main() {
+	if err := service.Date.ReadJson(); err != nil {
+		fmt.Println("static error")
+		err = service.Date.WriteJson()
+		if err != nil {
+			fmt.Println("static error")
+			return
+		}
+	}
 	go service.Ticker()
 	go service.TickerTX()
 	go service.Write()
