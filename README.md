@@ -4,9 +4,9 @@
 同样推荐配置密码
 请不要修改json文件的数据结构
 ### 指定端口
-默认端口 ：8080 \n
+默认端口 ：8080 <br>
 ./文件名 端口号
-例如:\n
+例如:<br>
 
-xqtx_windows_amd64.exe 3000\n
+xqtx_windows_amd64.exe 3000<br>
 ./xqtx_linux_amd64 3000
