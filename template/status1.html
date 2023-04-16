@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ .title }}</title>
+    <!-- <meta http-equiv="refresh" content="30;url=/"> -->
+    <!-- 加载Bootstrap和自定义CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 5rem;
+            font-family: "Microsoft YaHei", sans-serif;
+            background-color: #F8F8F8;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 2rem;
+        }
+
+        .container {
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .card {
+            margin-bottom: 2rem;
+            display: inline-block;
+            /* border: 1px solid red; */
+            width: 23.5vw;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-list {
+            float: left;
+             margin-top: 75px;
+        }
+        .card-header {
+            background-color: #C9D9F7;
+            position: relative;
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 18px;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+            line-height: 0.5;
+        }
+
+        .btn-add {
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            position: absolute;
+            /* border: 1px solid red; */
+            background-color: #C9D9F7;
+            border-color: #C9D9F7;
+            border-radius: 0;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-add:hover {
+            background-color: #A3B7E6;
+            border-color: #A3B7E6;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+        .form-controls {
+            display:none;
+            border-radius: 0;
+        }
+
+        .btn-submit {
+            margin-top: 1rem;
+            background-color: #C9D9F7;
+            border-color: #C9D9F7;
+            border-radius: 0;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .btn-del {
+            border-radius: 5px;
+            position: absolute;
+            left: 80%;
+            background-color: #efefef;
+            border-radius: 0;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+        .btn-put {
+            border-radius: 5px;
+            position: absolute;
+            left: 60%;
+            background-color: #efefef;
+            border-radius: 0;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        .btn-close {
+            margin-top: 1rem;
+            background-color: #616e87;
+            border-color: #616e87;
+            border-radius: 0;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-submit:hover {
+            background-color: #A3B7E6;
+            border-color: #A3B7E6;
+        }
+        .btn-close:hover {
+            background-color: #A3B7E6;
+            border-color: #A3B7E6;
+        }
+        .status-ok {
+            color: #12B17E;
+            font-weight: bold;
+        }
+
+        .status-warning {
+            color: #ECC836;
+            font-weight: bold;
+        }
+
+        .status-error {
+            color: #D13838;
+            font-weight: bold;
+        }
+
+        .status-badge {
+            font-size: 18px;
+            font-weight: bold;
+            margin-left: auto;
+            padding-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ .title }}</h1>
+        <button type="button" class="btn btn-add" data-toggle="modal" data-target="#add-modal">添加监控</button>
+        <div class="card-list">
+       
+        {{ range .statusList }}
+        <div class="card">
+            <div class="card-header">{{ .Name }}<span class="status-badge {{ if eq .Value "OK" }}status-ok{{ else if eq .Value "Warning"}}status-warning{{ else }}status-error{{ end }}">{{ .Value }}
+                <button type="button" class="btn btn-del" data-toggle="modal" data-target={{.DelName1}}>删除</button>
+                <button type="button" class="btn btn-put" data-toggle="modal" data-target="{{.PutName1}}">修改</button>
+                <div class="modal fade" id={{.DelName2}} tabindex="-1" role="dialog" aria-labelledby="del-modal-label"
+                aria-hidden="true" style="color: black;">
+                <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <h5 class="modal-title" id="add-modal-label">删除{{ .Name }}</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                               <span aria-hidden="true">&times;</span>
+                           </button>
+                       </div>
+                       <form action="/del" enctype="multipart/form-data" method="post">
+                        <select class="form-controls" id="status-web" name = "uuid" >
+                            <option value={{.Uuid}}></option>
+                        </select>
+                           <div class="modal-footer">
+                            <button type="submit" class="btn btn-submit">确认</button>
+                               <button type="button" class="btn btn-submit" data-dismiss="modal">关闭</button>
+                           </div>
+                       </form>
+                   </div>
+                </div>
+                </div>
+                <div class="modal fade" id="{{.PutName2}}" tabindex="-1" role="dialog" aria-labelledby="put-modal-label"
+                aria-hidden="true" style="color: black;">
+                <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <h5 class="modal-title" id="add-modal-label">修改监控</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                               <span aria-hidden="true">&times;</span>
+                           </button>
+                       </div>
+                       <form action="/put" enctype="multipart/form-data" method="post">
+                           <div class="modal-body">
+                               <div class="form-group">
+                                   <label for="name-input">监控名称:</label>
+                                   <input type="text" class="form-control" id="name-input" name="name" value={{.Name}}>
+                               </div>
+                               <input type="hidden" name="uuid" value={{.Uuid}}>
+                               <div class="form-group">
+                                   <label for="desc-input">监控COOKIE:</label>
+                                   <input class="form-control" id="cookie-input" 
+                                             value={{.Cookie}} name = "cookie"></input>
+                               </div>
+                               <div class="form-group">
+                                   <label for="status-select">监控网站: {{.Web}}</label>
+                               </div>
+                               <div class="form-group">
+                                <label for="status-select">提醒方式:</label>
+                                <select class="form-control" id="status-fs" name = "tx">
+                                    <option value=1 selected  =  "selected">邮箱提醒</option>
+                                    <!-- <option value=2>PUSHPLUS</option>
+                                    <option value=3>TGbot</option> -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="status-select">发送目标:</label>
+                                <input type="text" class="form-control" id="name-mubiao" name = "mubiao"placeholder="请输入发送目标" value={{.Email}}>
+                                <label for="status-select">邮箱提醒就填入邮箱,PUSHPLUS填入 token,发信通道 中间使用英文逗号隔开</label>
+                            </div>
+                           </div>
+                           <div class="modal-footer">
+                               <button type="button" class="btn btn-close" data-dismiss="modal">关闭</button>
+                               <button type="submit" class="btn btn-submit">修改</button>
+                           </div>
+                       </form>
+                   </div>
+                </div>
+                </div>
+            </span></div>
+            <div class="card-body">
+                
+           <p> Cookie状态:<span class="status-badge {{ if eq .Description "OK" }}status-ok{{ else if eq .Description "Warning"}}status-warning{{ else }}status-error{{ end }}">{{ .Description }}</span></p>
+            <p><span class="timestamp" style="color: black;" >机器名称：{{ .VpsNAME }}</span></p>
+            <p><span class="timestamp" style="color: black;" >过期时间：{{ .Time }}</span></p>
+            </div>
+            </div>
+            {{ end }}
+        </div></div>
+            <!-- 添加监控弹出窗口 -->
+<div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="add-modal-label"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+   <div class="modal-content">
+       <div class="modal-header">
+           <h5 class="modal-title" id="add-modal-label">添加监控</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+           </button>
+       </div>
+       <form action="/" enctype="multipart/form-data" method="post">
+           <div class="modal-body">
+               <div class="form-group">
+                   <label for="name-input">监控名称:</label>
+                   <input type="text" class="form-control" id="name-input" name="name" placeholder="请输入监控名称">
+               </div>
+               <div class="form-group">
+                   <label for="desc-input">监控COOKIE:</label>
+                   <input class="form-control" id="cookie-input" rows="2" name = "cookie" value = "PHPSESSID="></input>
+               </div>
+               <div class="form-group">
+                   <label for="status-select">监控网站:</label>
+                   <select class="form-control" id="status-web" name = "web" >
+                       <option value=1>woiden.id</option>
+                       <option value=2>hax.co.id</option>
+                       <option value=3>free.vps.vc</option>
+                   </select>
+               </div>
+               <div class="form-group">
+                <label for="status-select">提醒方式:</label>
+                <select class="form-control" id="status-fs" name = "tx">
+                    <option value=1 selected  =  "selected">邮箱提醒</option>
+                    <!-- <option value=2>PUSHPLUS</option> -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="status-select">发送目标:</label>
+                <input type="text" class="form-control" id="name-mubiao" name = "mubiao"placeholder="请输入发送目标">
+                <label for="status-select">邮箱提醒就填入邮箱,PUSHPLUS填入 token,发信通道 中间使用英文逗号隔开</label>
+            </div>
+           </div>
+           <div class="modal-footer">
+               <button type="button" class="btn btn-close" data-dismiss="modal">关闭</button>
+               <button type="submit" class="btn btn-submit">添加</button>
+           </div>
+       </form>
+   </div>
+</div>
+</div>
+      <!-- 删除监控弹出窗口 -->
+
+<!-- 加载jQuery和Bootstrap的JavaScript库 -->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
