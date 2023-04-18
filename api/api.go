@@ -4,6 +4,7 @@ import (
 	"edulx/hax_woiden_vc_xqtx/service"
 	"github.com/gin-gonic/gin"
 	"os"
+	"time"
 )
 
 type Status struct {
@@ -160,10 +161,61 @@ func Add(c *gin.Context) {
 	a.TO = mubiao
 	switch web {
 	case "1":
+		t := service.Woiden(a.Cookie)
+		if t == nil {
+			a.Code = "Warning"
+		}
+		layout := "January 02, 2006"
+		date, err := time.Parse(layout, t[0])
+		if err != nil {
+			a.Code = "error"
+		}
+
+		// 转换为时间戳
+		timestamp := date.String()
+		a.Time = timestamp
+		a.Code = "OK"
+		if len(t) >= 2 {
+			a.VpsNAME = t[1]
+		}
 		service.Date.Woiden = append(service.Date.Woiden, a)
 	case "2":
+		t := service.Hax(a.Cookie)
+		if t == nil {
+			a.Code = "Warning"
+		}
+		layout := "January 02, 2006"
+		date, err := time.Parse(layout, t[0])
+		if err != nil {
+			a.Code = "error"
+		}
+
+		// 转换为时间戳
+		timestamp := date.String()
+		a.Time = timestamp
+		a.Code = "OK"
+		if len(t) >= 2 {
+			a.VpsNAME = t[1]
+		}
 		service.Date.Hax = append(service.Date.Hax, a)
 	case "3":
+		t := service.Vc(a.Cookie)
+		if t == nil {
+			a.Code = "Warning"
+		}
+		layout := "January 02, 2006"
+		date, err := time.Parse(layout, t[0])
+		if err != nil {
+			a.Code = "error"
+		}
+
+		// 转换为时间戳
+		timestamp := date.String()
+		a.Time = timestamp
+		a.Code = "OK"
+		if len(t) >= 2 {
+			a.VpsNAME = t[1]
+		}
 		service.Date.Vc = append(x.Vc, a)
 	}
 

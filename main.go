@@ -23,6 +23,7 @@ func main() {
 			return
 		}
 	}
+	service.TX(60 * 60 * 24 * 2)
 	go service.Ticker()
 	go service.TickerTX()
 	go service.Write()

@@ -18,8 +18,20 @@ func TickerTX() {
 	for {
 		select {
 		case <-Tickers.C:
-			if time.Now().Hour() == 8 || time.Now().Hour() == 20 || time.Now().Hour() == 0 {
+
+			switch time.Now().Hour() {
+			case 8:
 				TX(60 * 60 * 24 * 2)
+			case 12:
+				TX(60 * 60 * 24 * 2)
+			case 18:
+				TX(60 * 60 * 24 * 2)
+			case 22:
+				TX(60 * 60 * 24 * 2)
+			case 15:
+				TX(60 * 60 * 24 * 2)
+			default:
+				TX(60 * 60 * 24 * 1)
 			}
 		}
 	}

@@ -86,7 +86,12 @@ func Run() {
 }
 
 func TX(ts int64) {
+	fmt.Println("TX开始")
 	var x = Date
+	err := x.ReadJson()
+	if err != nil {
+		return
+	}
 	mp := map[string][]FormEmail{}
 	for _, v := range x.Hax {
 		if len(v.Time) < 19 {
@@ -103,7 +108,7 @@ func TX(ts int64) {
 			e.Name = v.Name
 			e.VpsName = "HAX-" + v.VpsNAME
 			e.Times = v.Time[0:10]
-			if v.TC == "email" {
+			if v.TC == "1" {
 				if v.TO == "" {
 					mp[x.Email.From] = append(mp[x.Email.From], e)
 				} else {
@@ -127,7 +132,7 @@ func TX(ts int64) {
 			e.Name = v.Name
 			e.VpsName = "WOIDEN-" + v.VpsNAME
 			e.Times = v.Time[0:10]
-			if v.TC == "email" {
+			if v.TC == "1" {
 				if v.TO == "" {
 					mp[x.Email.From] = append(mp[x.Email.From], e)
 				} else {
@@ -151,7 +156,7 @@ func TX(ts int64) {
 			e.Name = v.Name
 			e.VpsName = "VC-" + v.VpsNAME
 			e.Times = v.Time[0:10]
-			if v.TC == "email" {
+			if v.TC == "1" {
 				if v.TO == "" {
 					mp[x.Email.From] = append(mp[x.Email.From], e)
 				} else {
@@ -162,7 +167,7 @@ func TX(ts int64) {
 	}
 	mps := html(mp)
 	for k, v := range mps {
-		err := x.Emails(k, "VPS到期提醒", v)
+		err := x.Emails(k, "续期提醒", v)
 		if err != true {
 			fmt.Println("发送邮件失败：", k)
 		} else {
