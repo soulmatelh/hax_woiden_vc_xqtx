@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+  release:
+    types: [created]
+
+permissions:
+    contents: write
+    packages: write
 
 jobs:
   build-go-binary:
