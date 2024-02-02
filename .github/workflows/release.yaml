@@ -1,9 +1,6 @@
 name: go_build
 
 on: 
-  push:
-    branches:
-      - main
   release:
     types: [created]
 
