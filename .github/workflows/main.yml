@@ -14,13 +14,10 @@ jobs:
         goos: [linux]
         goarch: [arm64]
     steps:
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
-
-      - name: Setup go and release
-        uses: wangyoucao577/go-release-action@v1
-        with:
-           github_token: ${{ secrets.GITHUB_TOKEN }}
-           goos: ${{ matrix.goos }}
-           goarch: ${{ matrix.goarch }}
-           binary_name: "xqtx"
+    - uses: actions/checkout@v4
+    - uses: wangyoucao577/go-release-action@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: ${{ matrix.goarch }}}
+        binary_name: "xqtx"
