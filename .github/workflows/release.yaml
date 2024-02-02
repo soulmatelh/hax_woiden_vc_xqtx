@@ -1,6 +1,6 @@
-name: go_build
+name: go_build_and_release
 
-on: 
+on:
   release:
     types: [created]
 
@@ -9,8 +9,8 @@ permissions:
   packages: write
 
 jobs:
-  release-go-binary:
-    name: Release Go Binary
+  build-and-release:
+    name: Build and Release
     runs-on: ubuntu-latest
 
     steps:
@@ -22,10 +22,8 @@ jobs:
       with:
         go-version: 1.17
 
-    - name: Build and publish
-      run: |
-        go build -o xqtx main.go
-        echo "Binary file built and ready to be published"
+    - name: Build
+      run: go build -o xq main.go
 
     - name: Create release
       id: create_release
@@ -47,6 +45,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./xqtx
-        asset_name: xqtx
+        asset_path: ./xq
+        asset_name: xq
         asset_content_type: application/octet-stream
