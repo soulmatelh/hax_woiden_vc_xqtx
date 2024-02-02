@@ -6,17 +6,19 @@ on:
       - main
 
 jobs:
-  releases-matrix:
-    name: Release Go Binary
+  build-go-binary:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goos: [linux]
-        goarch: [arm64]
+        goos: [linux, windows, darwin] 
+        goarch: [amd64, arm64] 
+        exclude: 
+          - goarch: arm64
+            goos: windows
 
     steps:
     - uses: actions/checkout@v3
-    - uses: wangyoucao577/go-release-action@v1.34
+    - uses: wangyoucao577/go-release-action@v1.30
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
