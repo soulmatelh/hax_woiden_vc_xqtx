@@ -1,0 +1,42 @@
+name: checks  # Workflow 的名称
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    name: "Build & test"  # 作业的名称
+    runs-on: ubuntu-latest  # 在 Ubuntu 最新版本上运行
+
+    strategy:
+      fail-fast: false
+      matrix:
+        go: ["1.21.x"]  # 使用的 Go 版本
+
+    steps:
+      - uses: actions/checkout@v3  # 使用 actions/checkout 动作
+      - uses: actions/setup-go@v4  # 使用 actions/setup-go 动作
+        with:
+          go-version: ${{ matrix.go }}  # 设置 Go 版本
+          cache: true  # 启用缓存
+
+      - name: Build binaries  # 构建二进制文件
+        run: |
+          go build ./cmd/controller  # 构建 controller
+          go build ./cmd/cli  # 构建 cli
+
+      - name: Test all packages  # 测试所有包
+        run: |
+          go test ./...
+
+      - name: Go vet  # 运行 go vet
+        run: "go vet ./..."
+
+      - name: Static check  # 静态检查
+        uses: dominikh/staticcheck-action@v1.2.0  # 使用 staticcheck-action 动作
+        with:
+          install-go: false
+          cache-key: ${{ matrix.go }}  # 缓存键
